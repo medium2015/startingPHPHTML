@@ -29,7 +29,7 @@
                 while ($cat = mysqli_fetch_assoc($categories) )
                 {
                     ?>
-                    <li><a href="/pages/kafedra.php?category=<?php echo $cat['id']; ?>"><?php echo $cat['abbr']; ?></a></li> 
+                    <li><a href="/pages/kafedra.php?category=<?php echo $cat['id']; ?>"><?=$cat['abbr']; ?></a></li> 
               <?php   
                 }
               ?> 
