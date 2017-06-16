@@ -7,8 +7,7 @@
   <meta charset="UTF-8">
   <title><?php echo $config['title']; ?></title>
 
-  <!-- Bootstrap Grid -->
-  <link rel="stylesheet" type="text/css" href="/media/assets/bootstrap-grid-only/css/grid12.css">
+x`
 
   <!-- Google Fonts -->
   <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700" rel="stylesheet">
@@ -25,15 +24,213 @@
     <div id="content">
       <div class="container">
         <div class="row">
-          <section class="content__left col-md-10">
+          <section class="content__left col-md-12">
             <div class="block"> 
               <h3></h3>
               <div class="block__content">
                 <div class="full-text">
+                  <a href="./admin_login.php">Все таблицы</a>
                   <?php
                     if (isset($_REQUEST['action'])){
                       switch ($_REQUEST['action']) 
                         {
+                          case 'Сохранить':
+                            switch ($_REQUEST['tableName']) 
+                            {
+                              case 'faculty':
+                              $query =sprintf("
+                                INSERT INTO 
+                                `faculty`(
+                                  `id`,
+                                  `name`,
+                                  `abbr`,
+                                  `phone`)
+                                  VALUES (NULL,'%s','%s','%s')",
+                                    $_REQUEST['facultyName'],
+                                    $_REQUEST['facultyAbbr'],
+                                    $_REQUEST['facultyPhone']);
+                                $result = mysqli_query($connection, $query);
+                                break;
+
+                                case 'group':
+                                $query =sprintf("
+                                INSERT INTO 
+                                `group`(
+                                  `id`,
+                                  `speciality_id`,
+                                  `name`,
+                                  `course`,
+                                  `kafedra_id`,
+                                  `study_start`,
+                                  `study_end`)
+                                  VALUES (NULL,'%s','%s','%s','%s','%s','%s')",
+                                    $_REQUEST['specialityId'],
+                                    $_REQUEST['groupName'],
+                                    $_REQUEST['groupCourse'],
+                                    $_REQUEST['kafedraId'],
+                                    $_REQUEST['groupStudyStart'],
+                                    $_REQUEST['groupStudyEnd']);
+                                $result = mysqli_query($connection, $query);
+                                break;
+
+                                case 'kafedra':
+                                $query =sprintf("
+                                INSERT INTO 
+                                `kafedra`(
+                                  `id`,
+                                  `name`,
+                                  `abbr`,
+                                  `phone`)
+                                  VALUES (NULL,'%s','%s','%s')",
+                                    $_REQUEST['kafedraName'],
+                                    $_REQUEST['kafedraAbbr'],
+                                    $_REQUEST['kafedraPhone']);
+                                $result = mysqli_query($connection, $query);
+                                break;
+
+                                case 'lecturers':
+                                $query =sprintf("
+                                INSERT INTO 
+                                `lecturers`(
+                                  `id`,
+                                  `name`,
+                                  `surname`,
+                                  `patronomic_name`,
+                                  `adress`,
+                                  `gender`,
+                                  `date_born`,
+                                  `kafedra_id`)
+                                  VALUES (NULL,'%s','%s','%s','%s','%s','%s','%s')",
+                                    $_REQUEST['leturersName'],
+                                    $_REQUEST['lecturersSurname'],
+                                    $_REQUEST['lecturersPatronomicName'],
+                                    $_REQUEST['lecturersAdress'],
+                                    $_REQUEST['lecturersGender'],
+                                    $_REQUEST['lecturersDateBorn'],
+                                    $_REQUEST['kafedraId']);
+                                $result = mysqli_query($connection, $query);
+                                break;
+
+                                case 'social_activity':
+                                $query =sprintf("
+                                INSERT INTO 
+                                `social_activity`(
+                                  `id`,
+                                  `student_id`,
+                                  `type`,
+                                  `bal`)
+                                  VALUES (NULL,'%s','%s','%s')",
+                                    $_REQUEST['studentId'],
+                                    $_REQUEST['socialActivityType'],
+                                    $_REQUEST['socialActivityBal']);
+                                $result = mysqli_query($connection, $query);
+                                break;
+
+                                case 'speciality':
+                                $query =sprintf("
+                                INSERT INTO 
+                                `speciality`(
+                                  `id`,
+                                  `name`,
+                                  `kafedra_id`)
+                                  VALUES (NULL,'%s','%s')",
+                                    $_REQUEST['specialityName'],
+                                    $_REQUEST['kafedraId']);
+                                $result = mysqli_query($connection, $query);
+                                break;
+
+                                case 'stipendiya_naznachenie':
+                                $query =sprintf("
+                                INSERT INTO 
+                                `stipendiya_naznachenie`(
+                                  `id`,
+                                  `student_id`,
+                                  `stipendiya_types_id`,
+                                  `date_start`,
+                                  `date_end`)
+                                  VALUES (NULL,'%s','%s','%s','%s')",
+                                    $_REQUEST['studentId'],
+                                    $_REQUEST['stipendiyaTypesId'],
+                                    $_REQUEST['stipendiyaNaznachenieDateStart'],
+                                    $_REQUEST['stipendiyaNaznachenieDateEnd']);
+                                $result = mysqli_query($connection, $query);
+                                break;
+
+                                case 'stipendiya_types':
+                                $query =sprintf("
+                                INSERT INTO 
+                                `stipendiya_types`(
+                                  `id`,
+                                  `type`,
+                                  `amount`)
+                                  VALUES (NULL,'%s','%s')",
+                                    $_REQUEST['stipendiyaTypesType'],
+                                    $_REQUEST['stipendiyaTypesAmount']);
+                                $result = mysqli_query($connection, $query);
+                                break;
+
+                                case 'student':
+                                $query =sprintf("
+                                INSERT INTO 
+                                `student`(
+                                  `id`,
+                                  `surname`,
+                                  `name`,
+                                  `patronomic_name`,
+                                  `adress`,
+                                  `gender`,
+                                  `date_born`,
+                                  `group_id`)
+                                  VALUES (NULL,'%s','%s','%s','%s','%s','%s','%s')",
+                                    $_REQUEST['studentSurname'],
+                                    $_REQUEST['studentName'],
+                                    $_REQUEST['studentPatronomicName'],
+                                    $_REQUEST['studentAdress'],
+                                    $_REQUEST['studentGender'],
+                                    $_REQUEST['studentDateBorn'],
+                                    $_REQUEST['groupId']);
+                                $result = mysqli_query($connection, $query);
+                                break;
+
+                                case 'study':
+                                $query =sprintf("
+                                INSERT INTO 
+                                `study`(
+                                  `id`,
+                                  `subject_id`,
+                                  `group_id`,
+                                  `semesrt`)
+                                  VALUES (NULL,'%s','%s','%s')",
+                                    $_REQUEST['subjectId'],
+                                    $_REQUEST['groupId'],
+                                    $_REQUEST['studySemesrt']); 
+                                $result = mysqli_query($connection, $query);
+                                break;
+
+                                case 'subject':
+                                $query =sprintf("
+                                INSERT INTO 
+                                `subject`(
+                                  `id`,
+                                  `name`,
+                                  `lecture_id`,
+                                  `lection_time`,
+                                  `laba_time`,
+                                  `course_work`,
+                                  `type`)
+                                  VALUES (NULL,'%s','%s','%s','%s','%s','%s')",
+                                    $_REQUEST['subjectName'],
+                                    $_REQUEST['lectureId'],
+                                    $_REQUEST['subjectLectionTime'],
+                                    $_REQUEST['subjectLabaTime'],
+                                    $_REQUEST['subjectCourseWork'],
+                                    $_REQUEST['subjectType']); 
+                                $result = mysqli_query($connection, $query);
+                                break;
+                                default:
+                                # code...
+                                break;
+                          }
                           case 'Изменить':
                             switch ($_REQUEST['tableName']) 
                             {
@@ -55,11 +252,12 @@
                                 UPDATE 
                                 `group` 
                                 SET
+                                  `speciality_id`='".$_REQUEST['specialityId']."',
                                   `name`='".$_REQUEST['groupName']."',
                                   `course`='".$_REQUEST['groupCourse']."',
-                                  `kafedra`='".$_REQUEST['groupKafedra']."',
-                                  `date_start`='".$_REQUEST['groupDateStart']."',
-                                  `date_end`='".$_REQUEST['groupDateEnd']."'
+                                  `kafedra_id`='".$_REQUEST['kafedraId']."',
+                                  `study_start`='".$_REQUEST['groupStudyStart']."',
+                                  `study_end`='".$_REQUEST['groupStudyEnd']."'
                                 WHERE `group`.`id` = '".$_REQUEST['id']."'";
 
                                 $result = mysqli_query($connection, $query);
@@ -83,12 +281,13 @@
                                 UPDATE 
                                 `lecturers` 
                                 SET
-                                  `name`='".$_REQUEST['lecturersName']."',
+                                  `name`='".$_REQUEST['leсturersName']."',
                                   `surname`='".$_REQUEST['lecturersSurname']."',
                                   `patronomic_name`='".$_REQUEST['lecturersPatronomicName']."',
                                   `adress`='".$_REQUEST['lecturersAdress']."',
                                   `gender`='".$_REQUEST['lecturersGender']."',
-                                  `date_born`='".$_REQUEST['lecturersDateBorn']."'
+                                  `date_born`='".$_REQUEST['lecturersDateBorn']."',
+                                  `kafedra_id`='".$_REQUEST['kafedraId']."'
                                 WHERE `lecturers`.`id` = '".$_REQUEST['id']."'";
 
                                 $result = mysqli_query($connection, $query);
@@ -99,6 +298,7 @@
                                 UPDATE 
                                 `social_activity` 
                                 SET
+                                  `student_id`='".$_REQUEST['studentId']."',
                                   `type`='".$_REQUEST['socialActivityType']."',
                                   `bal`='".$_REQUEST['socialActivityBal']."'
                                 WHERE `social_activity`.`id` = '".$_REQUEST['id']."'";
@@ -112,7 +312,7 @@
                                 `speciality` 
                                 SET
                                   `name`='".$_REQUEST['specialityName']."',
-                                  `kafedra`='".$_REQUEST['specialityKafedraName']."'
+                                  `kafedra_id`='".$_REQUEST['kafedraId']."'
                                 WHERE `speciality`.`id` = '".$_REQUEST['id']."'";
 
                                 $result = mysqli_query($connection, $query);
@@ -123,7 +323,8 @@
                                 UPDATE 
                                 `stipendiya_naznachenie` 
                                 SET
-                                  `type`='".$_REQUEST['stipendiyaNaznachenieType']."',
+                                  `student_id`='".$_REQUEST['studentId']."',
+                                  `stipendiya_types_id`='".$_REQUEST['stipendiyaTypesId']."',
                                   `date_start`='".$_REQUEST['stipendiyaNaznachenieDateStart']."',
                                   `date_end`='".$_REQUEST['stipendiyaNaznachenieDateEnd']."'
                                 WHERE `stipendiya_naznachenie`.`id` = '".$_REQUEST['id']."'";
@@ -154,6 +355,7 @@
                                   `adress`='".$_REQUEST['studentAdress']."',
                                   `gender`='".$_REQUEST['studentGender']."',
                                   `date_born`='".$_REQUEST['studentDateBorn']."',
+                                  `group_id`='".$_REQUEST['groupId']."'
                                 WHERE `student`.`id` = '".$_REQUEST['id']."'";
 
                                 $result = mysqli_query($connection, $query);
@@ -164,7 +366,9 @@
                                 UPDATE 
                                 `study` 
                                 SET
-                                  `semestr`='".$_REQUEST['studySemestr']."'
+                                  `subject_id` = '".$_REQUEST['subjectId']."',
+                                  `group_id` = '".$_REQUEST['groupId']."',
+                                  `semesrt`='".$_REQUEST['studySemesrt']."'
                                 WHERE `study`.`id` = '".$_REQUEST['id']."'";
 
                                 $result = mysqli_query($connection, $query);
@@ -176,6 +380,7 @@
                                 `subject` 
                                 SET
                                   `name`='".$_REQUEST['subjectName']."',
+                                  `lecture_id`='".$_REQUEST['lectureId']."',
                                   `lection_time`='".$_REQUEST['subjectLectionTime']."',
                                   `laba_time`='".$_REQUEST['subjectLabaTime']."',
                                   `course_work`='".$_REQUEST['subjectCourseWork']."',
@@ -193,14 +398,9 @@
                             # code...
                             break;      
                           case 'del':
-
-                            $result = mysqli_query($connection, "DELETE FROM `".$_GET['tableName']."` WHERE `faculty`.`id` = '".$_GET['id']."'");   
-
-                            # code...
+                            $result = mysqli_query($connection, sprintf("DELETE FROM `%s` WHERE `%s`.`id` = %s", $_REQUEST['tableName'], $_REQUEST['tableName'], $_REQUEST['id'])); 
                             break;
-                          default:
-                            # code...
-                            break;
+                          
                         }
                       }
                     switch ($_REQUEST['tableName']) 
@@ -225,11 +425,14 @@
                             <td align="center"><?=$res['name'];?></td>
                             <td align="center"><?=$res['abbr'];?></td>
                             <td align="center"><?=$res['phone'];?></td>
-                            <td align="center"><a href="./edit_row.php?tableName=<?=$_REQUEST['tableName'];?>&id=<?=$res['id'];?>">Изменить/</a>&nbsp<a href="./edit_table.php?tableName=<?=$_REQUEST['tableName'];?>&id=<?=$res['id'];?>&action=del">Удалить</a></td>
+                            <td align="center"><button><a href="./edit_row.php?tableName=<?=$_REQUEST['tableName'];?>&id=<?=$res['id'];?>&action=edit">Изменить</a></button>&nbsp<button><a href="./edit_table.php?tableName=<?=$_REQUEST['tableName'];?>&id=<?=$res['id'];?>&action=del">Удалить</a></button></td>
                           </tr>
                   <?php  
                         }?>
                         </table>
+                        <button>
+                          <a href="./edit_row.php?tableName=<?=$_REQUEST['tableName'];?>&id=<?=$res['id'];?>&action=add">Добавить запись</a>
+                        </button>
                         <?php
                             break;
                           case 'group':
@@ -258,11 +461,13 @@
                             <td align="center"><?=$res['kafedra_name'];?></td>
                             <td align="center"><?=$res['study_start'];?></td>
                             <td align="center"><?=$res['study_end'];?></td>
-                            <td align="center"><a href="./edit_row.php?tableName=<?=$_REQUEST['tableName'];?>&id=<?=$res['id'];?>">Изменить/</a>&nbsp<a href="./edit_table.php?tableName=<?=$_REQUEST['tableName'];?>&id=<?=$res['id'];?>&action=del">Удалить</a></td>
-                          </tr>
+                            <td align="center"><button><a href="./edit_row.php?tableName=<?=$_REQUEST['tableName'];?>&id=<?=$res['id'];?>&action=edit">Изменить</a></button>&nbsp<button><a href="./edit_table.php?tableName=<?=$_REQUEST['tableName'];?>&id=<?=$res['id'];?>&action=del">Удалить</a></button></td>                          </tr>
                   <?php  
                         }?>
                         </table>
+                        <button>
+                          <a href="./edit_row.php?tableName=<?=$_REQUEST['tableName'];?>&id=<?=$res['id'];?>&action=add">Добавить запись</a>
+                        </button>
                         <?php
                             break;
                             case 'kafedra':
@@ -285,11 +490,13 @@
                             <td align="center"><?=$res['name'];?></td>
                             <td align="center"><?=$res['abbr'];?></td>
                             <td align="center"><?=$res['phone'];?></td>
-                            <td align="center"><a href="./edit_row.php?tableName=<?=$_REQUEST['tableName'];?>&id=<?=$res['id'];?>">Изменить/</a>&nbsp<a href="./edit_table.php?tableName=<?=$_REQUEST['tableName'];?>&id=<?=$res['id'];?>&action=del">Удалить</a></td>
-                          </tr>
+                            <td align="center"><button><a href="./edit_row.php?tableName=<?=$_REQUEST['tableName'];?>&id=<?=$res['id'];?>&action=edit">Изменить</a></button>&nbsp<button><a href="./edit_table.php?tableName=<?=$_REQUEST['tableName'];?>&id=<?=$res['id'];?>&action=del">Удалить</a></button></td>                          </tr>
                   <?php  
                         }?>
                         </table>
+                        <button>
+                          <a href="./edit_row.php?tableName=<?=$_REQUEST['tableName'];?>&id=<?=$res['id'];?>&action=add">Добавить запись</a>
+                        </button>
                         <?php
                             break;
                             case 'lecturers':
@@ -320,11 +527,13 @@
                             <td align="center"><?=$res['gender'];?></td>
                             <td align="center"><?=$res['date_born'];?></td>
                             <td align="center"><?=$res['kafedra_name'];?></td>
-                            <td align="center"><a href="./edit_row.php?tableName=<?=$_REQUEST['tableName'];?>&id=<?=$res['id'];?>">Изменить/</a>&nbsp<a href="./edit_table.php?tableName=<?=$_REQUEST['tableName'];?>&id=<?=$res['id'];?>&action=del">Удалить</a></td>
-                          </tr>
+                            <td align="center"><button><a href="./edit_row.php?tableName=<?=$_REQUEST['tableName'];?>&id=<?=$res['id'];?>&action=edit">Изменить</a></button>&nbsp<button><a href="./edit_table.php?tableName=<?=$_REQUEST['tableName'];?>&id=<?=$res['id'];?>&action=del">Удалить</a></button></td>                          </tr>
                   <?php  
                         }?>
                         </table>
+                        <button>
+                          <a href="./edit_row.php?tableName=<?=$_REQUEST['tableName'];?>&id=<?=$res['id'];?>&action=add">Добавить запись</a>
+                        </button>
                         <?php
                             break;
                             case 'social_activity':
@@ -347,11 +556,13 @@
                             <td align="center"><?=$res['surname'].' '.mb_substr($res['name'],0,1,'UTF-8').'.'.mb_substr($res['patronomic_name'],0,1,'UTF-8').'.';?></td>
                             <td align="center"><?=$res['type'];?></td>
                             <td align="center"><?=$res['bal'];?></td>
-                            <td align="center"><a href="./edit_row.php?tableName=<?=$_REQUEST['tableName'];?>&id=<?=$res['id'];?>">Изменить/</a>&nbsp<a href="./edit_table.php?tableName=<?=$_REQUEST['tableName'];?>&id=<?=$res['id'];?>&action=del">Удалить</a></td>
-                          </tr>
+                            <td align="center"><button><a href="./edit_row.php?tableName=<?=$_REQUEST['tableName'];?>&id=<?=$res['id'];?>&action=edit">Изменить</a></button>&nbsp<button><a href="./edit_table.php?tableName=<?=$_REQUEST['tableName'];?>&id=<?=$res['id'];?>&action=del">Удалить</a></button></td>                          </tr>
                   <?php  
                         }?>
                         </table>
+                        <button>
+                          <a href="./edit_row.php?tableName=<?=$_REQUEST['tableName'];?>&id=<?=$res['id'];?>&action=add">Добавить запись</a>
+                        </button>
                         <?php
                             break;
                             case 'speciality':
@@ -372,11 +583,13 @@
                             <td align="center"><?=$res['id'];?></td>
                             <td align="center"><?=$res['name'];?></td>
                             <td align="center"><?=$res['kafedra_name'];?></td>
-                            <td align="center"><a href="./edit_row.php?tableName=<?=$_REQUEST['tableName'];?>&id=<?=$res['id'];?>">Изменить/</a>&nbsp<a href="./edit_table.php?tableName=<?=$_REQUEST['tableName'];?>&id=<?=$res['id'];?>&action=del">Удалить</a></td>
-                          </tr>
+                            <td align="center"><button><a href="./edit_row.php?tableName=<?=$_REQUEST['tableName'];?>&id=<?=$res['id'];?>&action=edit">Изменить</a></button>&nbsp<button><a href="./edit_table.php?tableName=<?=$_REQUEST['tableName'];?>&id=<?=$res['id'];?>&action=del">Удалить</a></button></td>                          </tr>
                   <?php  
                         }?>
                         </table>
+                        <button>
+                          <a href="./edit_row.php?tableName=<?=$_REQUEST['tableName'];?>&id=<?=$res['id'];?>&action=add">Добавить запись</a>
+                        </button>
                         <?php
                             break;
                             case 'stipendiya_naznachenie':
@@ -401,11 +614,13 @@
                             <td align="center"><?=$res['type'];?></td>
                             <td align="center"><?=$res['date_start'];?></td>
                             <td align="center"><?=$res['date_end'];?></td>
-                            <td align="center"><a href="./edit_row.php?tableName=<?=$_REQUEST['tableName'];?>&id=<?=$res['id'];?>">Изменить/</a>&nbsp<a href="./edit_table.php?tableName=<?=$_REQUEST['tableName'];?>&id=<?=$res['id'];?>&action=del">Удалить</a></td>
-                          </tr>
+                            <td align="center"><button><a href="./edit_row.php?tableName=<?=$_REQUEST['tableName'];?>&id=<?=$res['id'];?>&action=edit">Изменить</a></button>&nbsp<button><a href="./edit_table.php?tableName=<?=$_REQUEST['tableName'];?>&id=<?=$res['id'];?>&action=del">Удалить</a></button></td>                          </tr>
                   <?php  
                         }?>
                         </table>
+                        <button>
+                          <a href="./edit_row.php?tableName=<?=$_REQUEST['tableName'];?>&id=<?=$res['id'];?>&action=add">Добавить запись</a>
+                        </button>
                         <?php
                             break;
                             case 'stipendiya_types':
@@ -426,11 +641,13 @@
                             <td align="center"><?=$res['id'];?></td>
                             <td align="center"><?=$res['type'];?></td>
                             <td align="center"><?=$res['amount'];?></td>
-                            <td align="center"><a href="./edit_row.php?tableName=<?=$_REQUEST['tableName'];?>&id=<?=$res['id'];?>">Изменить/</a>&nbsp<a href="./edit_table.php?tableName=<?=$_REQUEST['tableName'];?>&id=<?=$res['id'];?>&action=del">Удалить</a></td>
-                          </tr>
+                            <td align="center"><button><a href="./edit_row.php?tableName=<?=$_REQUEST['tableName'];?>&id=<?=$res['id'];?>&action=edit">Изменить</a></button>&nbsp<button><a href="./edit_table.php?tableName=<?=$_REQUEST['tableName'];?>&id=<?=$res['id'];?>&action=del">Удалить</a></button></td>                          </tr>
                   <?php  
                         }?>
                         </table>
+                        <button>
+                          <a href="./edit_row.php?tableName=<?=$_REQUEST['tableName'];?>&id=<?=$res['id'];?>&action=add">Добавить запись</a>
+                        </button>
                         <?php
                             break;
                             case 'student':
@@ -460,12 +677,14 @@
                             <td align="center"><?=$res['adress'];?></td>
                             <td align="center"><?=$res['gender'];?></td>
                             <td align="center"><?=$res['date_born'];?></td>
-                            <td align="center"><?=$res['grou_name'];?></td>
-                            <td align="center"><a href="./edit_row.php?tableName=<?=$_REQUEST['tableName'];?>&id=<?=$res['id'];?>">Изменить/</a>&nbsp<a href="./edit_table.php?tableName=<?=$_REQUEST['tableName'];?>&id=<?=$res['id'];?>&action=del">Удалить</a></td>
-                          </tr>
+                            <td align="center"><?=$res['group_name'];?></td>
+                            <td align="center"><button><a href="./edit_row.php?tableName=<?=$_REQUEST['tableName'];?>&id=<?=$res['id'];?>&action=edit">Изменить</a></button>&nbsp<button><a href="./edit_table.php?tableName=<?=$_REQUEST['tableName'];?>&id=<?=$res['id'];?>&action=del">Удалить</a></button></td>                          </tr>
                   <?php  
                         }?>
                         </table>
+                        <button>
+                          <a href="./edit_row.php?tableName=<?=$_REQUEST['tableName'];?>&id=<?=$res['id'];?>&action=add">Добавить запись</a>
+                        </button>
                         <?php
                             break;
                             case 'study':
@@ -488,11 +707,13 @@
                             <td align="center"><?=$res['name'];?></td>
                             <td align="center"><?=$res['group_name'];?></td>
                             <td align="center"><?=$res['semesrt'];?></td>
-                            <td align="center"><a href="./edit_row.php?tableName=<?=$_REQUEST['tableName'];?>&id=<?=$res['id'];?>">Изменить/</a>&nbsp<a href="./edit_table.php?tableName=<?=$_REQUEST['tableName'];?>&id=<?=$res['id'];?>&action=del">Удалить</a></td>
-                          </tr>
+                            <td align="center"><button><a href="./edit_row.php?tableName=<?=$_REQUEST['tableName'];?>&id=<?=$res['id'];?>&action=edit">Изменить</a></button>&nbsp<button><a href="./edit_table.php?tableName=<?=$_REQUEST['tableName'];?>&id=<?=$res['id'];?>&action=del">Удалить</a></button></td>                          </tr>
                   <?php  
                         }?>
                         </table>
+                        <button>
+                          <a href="./edit_row.php?tableName=<?=$_REQUEST['tableName'];?>&id=<?=$res['id'];?>&action=add">Добавить запись</a>
+                        </button>
                         <?php
                             break;
                             case 'subject':
@@ -521,11 +742,13 @@
                             <td align="center"><?=$res['laba_time'];?></td>
                             <td align="center"><?=$res['course_work'];?></td>
                             <td align="center"><?=$res['type'];?></td>
-                            <td align="center"><a href="./edit_row.php?tableName=<?=$_REQUEST['tableName'];?>&id=<?=$res['id'];?>">Изменить/</a>&nbsp<a href="./edit_table.php?tableName=<?=$_REQUEST['tableName'];?>&id=<?=$res['id'];?>&action=del">Удалить</a></td>
-                          </tr>
+                            <td align="center"><button><a href="./edit_row.php?tableName=<?=$_REQUEST['tableName'];?>&id=<?=$res['id'];?>&action=edit">Изменить</a></button>&nbsp<button><a href="./edit_table.php?tableName=<?=$_REQUEST['tableName'];?>&id=<?=$res['id'];?>&action=del">Удалить</a></button></td>                          </tr>
                   <?php  
                         }?>
                         </table>
+                        <button>
+                          <a href="./edit_row.php?tableName=<?=$_REQUEST['tableName'];?>&id=<?=$res['id'];?>&action=ad">Добавить запись</a>
+                        </button>
                         <?php
                             break;
                           case 'del':
