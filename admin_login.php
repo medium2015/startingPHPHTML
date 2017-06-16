@@ -8,7 +8,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title><?php echo $config['title'];?></title>
+  <title><?= $config['title'];?></title>
 
   <!-- Bootstrap Grid -->
   <link rel="stylesheet" type="text/css" href="/media/assets/bootstrap-grid-only/css/grid12.css">
@@ -38,8 +38,8 @@
               <h3>Вас приветствует
               <?php echo $fac['name'];?>
               </h3></br>
-              <h5 align="center"><?php   echo $fac['name']    ?></h5>
-              <h6 align="center">Телефон <?php   echo $fac['phone']    ?></h6></br>
+              <h5 align="center"><?= $fac['name']    ?></h5>
+              <h6 align="center">Телефон <?= $fac['phone']    ?></h6></br>
               Декан - <strong>Сироватський Олександр Анатолійович</strong></br></br>
               Заступник декана - <strong>Садовниченко Олександр Вадимович</strong></br></br>
               Заступник декана по роботі в гуртожитку - <strong>Гунько Микита Владиславович</strong></br></br>
@@ -47,7 +47,7 @@
               <?php    
                     while ($name = mysqli_fetch_assoc($names) )
                     {
-                      ?> <h5> <?php echo $name['spec_name']; ?> </h5> <?php echo 'Выпускная кафедра «'. $name['kaf_name'] . '»' . '</br></br>';
+                      ?> <h5> <?= $name['spec_name']; ?> </h5> <?= 'Выпускная кафедра «'. $name['kaf_name'] . '»' . '</br></br>';
                     } 
                   ?>
             </div>
