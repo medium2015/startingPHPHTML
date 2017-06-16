@@ -1,5 +1,6 @@
 <?php
   require "../includes/config.php"; 
+  session_start();
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -31,48 +32,15 @@
               <div class="block__content">
                 <div class="full-text">
                   <?php
-                    if (($_REQUEST['login'] == $config['adminlog']) AND ($_REQUEST['password'] == $config['adminpassw']))
-                    {
+                  if (($_SESSION['login'] == '') AND ($_SESSION['password']) == '')
+                  {
+                    $_SESSION['login'] = $_REQUEST['login'];
+                    $_SESSION['password'] = $_REQUEST['password'];
+                  }
+                  if (($_SESSION['login'] == $config['adminlog']) AND ($_SESSION['password'] == $config['adminpassw']))
+                  {
                     if (isset($_REQUEST['action'])){
                       switch ($_REQUEST['action']) {
-                        case 'add':
-                          $query = sprintf("
-                          INSERT INTO 
-                          `students` (
-                            `surname`,
-                            `name`,
-                            `patronomyc`,
-                            `stud_number`) 
-                          VALUES ('%s', '%s','%s','%s')",
-                          $_GET['studentSurname'],
-                          $_GET['studentName'],
-                          $_GET['studentPatronomyc'],
-                          $_GET['studentNumber']
-                          ); 
-
-                          $result = mysqli_query($connection,$query);
-                          break;
-                        case 'edit':
-                          $query = sprintf("
-                          UPDATE 
-                          `students` 
-
-                          SET
-                          `surname`='%s',
-                            `name`='%s',
-                            `patronomyc`='%s',
-                            `stud_number`='%s'
-                          WHERE
-                            `id`='%s'",
-                          $_GET['studentSurname'],
-                          $_GET['studentName'],
-                          $_GET['studentPatronomyc'],
-                          $_GET['studentNumber'],
-                          $_GET['id']
-                          ); 
-
-                          $result = mysqli_query($connection, $query);
-                          break;
                         case 'del':
                           $query = sprintf("
                           DROP TABLE 
@@ -102,17 +70,18 @@
                           ?>
                           <tr>
                             <td><?=$tab['Tables_in_dekanat'];?></td>
-                             <td><a href="./edit_table.php?tableName=<?=$tab['Tables_in_dekanat'];?>">Изменить/</a>&nbsp<a href="./admin_login.php?name=<?=$tab['Tables_in_dekanat'];?>&login=<?=$_POST['login'];?>&password=<?=$_POST['password'];?>&action=del">Удалить</a></td>
+                            <td><button><a href="./edit_table.php?tableName=<?=$tab['Tables_in_dekanat'];?>&">Изменить</a></button>&nbsp<button><a href="./admin_login.php?name=<?=$tab['Tables_in_dekanat'];?>&action=del">Удалить</a></button></td>
                           </tr>
                   <?php  
                         }?>
                         </table>
                         <?php
-                    }
-                    else
-                    {
-                      echo 'Неправильный ввод данных';
-                    }
+                  }
+                  else
+                  {
+                      echo 'Неправильный ввод данных сломал меня, '?><a href="../pages/login.html" >полечи</a>;
+                  <?php
+                  }
                   ?>
                 </div>
               </div>
