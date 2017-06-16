@@ -1,12 +1,14 @@
 <?php
-  require "../includes/config.php"; 
+  require "includes/config.php"; 
   session_start();
+  session_unset();
+  session_destroy(); // разрушаем сессию
 ?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title><?php echo $config['title']; ?></title>
+  <title><?php echo $config['title'];?></title>
 
   <!-- Bootstrap Grid -->
   <link rel="stylesheet" type="text/css" href="/media/assets/bootstrap-grid-only/css/grid12.css">
@@ -21,81 +23,45 @@
 
   <div id="wrapper">
 
-    <?php include "../includes/header.php"; ?>
+  <?php include "includes/header.php"; 
+  
 
+    $faculty = mysqli_query($connection, "SELECT `name`,`phone` FROM `faculty`");
+    $fac = mysqli_fetch_assoc($faculty);
+    $names = mysqli_query($connection, "SELECT `kafedra`.`name` AS 'kaf_name',`speciality`.`name` AS 'spec_name' FROM `speciality` LEFT JOIN `kafedra` ON (`kafedra`.`id` = `speciality`.`kafedra_id`)");
+  ?>
     <div id="content">
       <div class="container">
         <div class="row">
           <section class="content__left col-md-8">
-            <div class="block"> 
-              <h3></h3>
-              <div class="block__content">
-                <div class="full-text">
-                  <?php
-                  if (($_SESSION['login'] == '') AND ($_SESSION['password']) == '')
-                  {
-                    $_SESSION['login'] = $_REQUEST['login'];
-                    $_SESSION['password'] = $_REQUEST['password'];
-                  }
-                  if (($_SESSION['login'] == $config['adminlog']) AND ($_SESSION['password'] == $config['adminpassw']))
-                  {
-                    if (isset($_REQUEST['action'])){
-                      switch ($_REQUEST['action']) {
-                        case 'del':
-                          $query = sprintf("
-                          DROP TABLE 
-                          `%s`",
-                          $_GET['name']
-                          ); 
-
-                          $result = mysqli_query($connection, $query);      
-                          # code...
-                          break;
-                        default:
-                          # code...
-                          break;
-                      }
-
-                    }
-                        $table = mysqli_query($connection, "SHOW TABLES");
-                        ?>
-                        <table>
-                          <tr>
-                              <td>Название таблицы</td>
-                              <td>Действие</td>
-                          </tr>
-                        <?php
-                        while ($tab = mysqli_fetch_assoc($table))
-                        {
-                          ?>
-                          <tr>
-                            <td><?=$tab['Tables_in_dekanat'];?></td>
-                            <td><button><a href="./edit_table.php?tableName=<?=$tab['Tables_in_dekanat'];?>&">Изменить</a></button>&nbsp<button><a href="./admin_login.php?name=<?=$tab['Tables_in_dekanat'];?>&action=del">Удалить</a></button></td>
-                          </tr>
-                  <?php  
-                        }?>
-                        </table>
-                        <?php
-                  }
-                  else
-                  {
-                      echo 'Неправильный ввод данных сломал меня, '?><a href="../pages/login.html" >полечи</a>;
-                  <?php
-                  }
+            <div class="block">
+              <h3>Вас приветствует
+              <?php echo $fac['name'];?>
+              </h3></br>
+              <h5 align="center"><?php   echo $fac['name']    ?></h5>
+              <h6 align="center">Телефон <?php   echo $fac['phone']    ?></h6></br>
+              Декан - <strong>Сироватський Олександр Анатолійович</strong></br></br>
+              Заступник декана - <strong>Садовниченко Олександр Вадимович</strong></br></br>
+              Заступник декана по роботі в гуртожитку - <strong>Гунько Микита Владиславович</strong></br></br>
+              <h5 align="center">Напрями підготовки та спеціальності</h5></br>
+              <?php    
+                    while ($name = mysqli_fetch_assoc($names) )
+                    {
+                      ?> <h5> <?php echo $name['spec_name']; ?> </h5> <?php echo 'Выпускная кафедра «'. $name['kaf_name'] . '»' . '</br></br>';
+                    } 
                   ?>
+            </div>
+          </section>
+          <section class="content__right col-md-4">
+            <?php include "/includes/sidebar.php"; ?>
                 </div>
               </div>
             </div>
-          
-          </section>
-          <section class="content__right col-md-4">
-           <?php include "../includes/sidebar.php"; ?>
           </section>
         </div>
       </div>
     </div>
-
-<?php include "../includes/footer.php"  ?>
+    <?php include "/includes/footer.php"  ?>
 
   </div>
 
