@@ -1,11 +1,8 @@
-<?php
-  require "../includes/config.php"; 
-?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title><?php echo $config['title']; ?></title>
+  <title><?= $config['title']; ?></title>
 
   <!-- Bootstrap Grid -->
   <link rel="stylesheet" type="text/css" href="/media/assets/bootstrap-grid-only/css/grid12.css">
