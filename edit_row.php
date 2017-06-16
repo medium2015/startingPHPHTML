@@ -30,6 +30,9 @@
               <h3></h3>
               <div class="block__content">
                 <div class="full-text">
+                  <a href="./admin_login.php">Все таблицы</a>
+                  ->
+                  <a href="./edit_table.php?tableName=<?=$_REQUEST['tableName'];?>">Записи</a>
                   <?php
                       switch ($_GET['tableName']) 
                       {
@@ -37,13 +40,13 @@
                               $result = mysqli_query($connection,"SELECT * FROM `faculty` WHERE `id` = '".$_GET['id']."';");
                               $row = mysqli_fetch_assoc($result)
                               ?>
-                              <form action="edit_table.php" method="POST">
+                              <form action="edit_table.php" method="GET">
                                 Название: <input type=text name="facultyName" value="<?=$row['name'];?>"></br>
                                 Аббривиатура: <input type=text name="facultyAbbr" value="<?=$row['abbr'];?>"></br>
                                 Номер Телефона: <input type=text name="facultyPhone" value="<?=$row['phone'];?>"></br>
                                 <input type=hidden name="id" value="<?=$row['id'];?>">
                                 <input type=hidden name="tableName" value="<?=$_GET['tableName'];?>">
-                                <input type=submit name="action" value="Изменить">
+                                <input type=submit name="action" value="<?=(empty($_REQUEST['id']))?"Сохранить":"Изменить";?>">
                               </form>
                   <?php
                               break;
@@ -52,19 +55,37 @@
                               break;
 
                             case 'group':
-                              $result = mysqli_query($connection,"SELECT `group`.`id`, `speciality`.`name` AS 'speciality_name', `group`.`name`, `group`.`course`, `kafedra`.`name` AS 'kafedra_name', `group`.`study_start`, `group`.`study_end` FROM `group` LEFT JOIN `kafedra` ON (`kafedra`.`id`=`group`.`kafedra_id`) LEFT JOIN `speciality` ON (`speciality`.`id` = `group`.`speciality_id`) WHERE `id` = '".$_GET['id']."';");
-                              $row = mysqli_fetch_assoc($result)
+                              $result = mysqli_query($connection, "SELECT * FROM `group` WHERE `id` = '".$_REQUEST['id']."'");
+                              $row = mysqli_fetch_assoc($result);
+                              $result1 = mysqli_query($connection, "SELECT * FROM `speciality`");
+                              $result2 = mysqli_query($connection, "SELECT * FROM `kafedra`");
                               ?>
-                              <form action="edit_table.php" method="POST">
+                              <form action="edit_table.php" method="GET">
                                 Группа: <input type=text name="groupName" value="<?=$row['name'];?>"></br>
-                                Специальность: <input type=text name="groupSpecialityName" value="<?=$row['speciality_name'];?>"readonly></br>
+                                Специальность:
+                                <select name='specialityId'>
+                                  <?php while ($row1 = mysqli_fetch_assoc($result1))
+                                  {
+                                    ?><option value='<?=$row1['id'];?>'  <?=($row1['id']==$row['speciality_id'])?"selected":"";?>><?=$row1['name'];?></option>
+                                  <?php
+                                  }
+                                  ?>
+                                </select></br>
                                 Курс: <input type=text name="groupCourse" value="<?=$row['course'];?>"></br>
-                                Кафедра: <input type=text name="groupKafedraName" value="<?=$row['kafedra_name'];?>"></br>
+                                Кафедра: 
+                                <select name='kafedraId'>
+                                  <?php while ($row2 = mysqli_fetch_assoc($result2))
+                                  {
+                                    ?><option value='<?=$row2['id'];?>'  <?=($row2['id']==$row['kafedra_id'])?"selected":"";?>><?=$row2['name'];?></option>
+                                  <?php
+                                  }
+                                  ?>
+                                </select></br>
                                 Начало обучения: <input type=text name="groupStudyStart" value="<?=$row['study_start'];?>"></br>
                                 Конеч обучения: <input type=text name="groupStudyEnd" value="<?=$row['study_start'];?>"></br>
                                 <input type=hidden name="id" value="<?=$row['id'];?>">
                                 <input type=hidden name="tableName" value="<?=$_GET['tableName'];?>">
-                                <input type=submit name="action" value="Изменить">
+                                <input type=submit name="action" value="<?=(empty($_REQUEST['id']))?"Сохранить":"Изменить";?>">
                               </form>
                   <?php
                               break;
@@ -76,13 +97,13 @@
                               $result = mysqli_query($connection,"SELECT * FROM `kafedra` WHERE `id` = '".$_GET['id']."';");
                               $row = mysqli_fetch_assoc($result)
                               ?>
-                              <form action="edit_table.php" method="POST">
+                              <form action="edit_table.php" method="GET">
                                 Название: <input type=text name="kafedraName" value="<?=$row['name'];?>"></br>
                                 Аббривиатура: <input type=text name="kafedraAbbr" value="<?=$row['abbr'];?>"></br>
                                 Номер Телефона: <input type=text name="kafedraPhone" value="<?=$row['phone'];?>"></br>
                                 <input type=hidden name="id" value="<?=$row['id'];?>">
                                 <input type=hidden name="tableName" value="<?=$_GET['tableName'];?>">
-                                <input type=submit name="action" value="Изменить">
+                                <input type=submit name="action" value="<?=(empty($_REQUEST['id']))?"Сохранить":"Изменить";?>">
                               </form>
                   <?php
                               break;
@@ -91,20 +112,29 @@
                               break;
                       
                             case 'lecturers':
-                              $result = mysqli_query($connection,"SELECT `lecturers`.`id`, `lecturers`.`name`, `lecturers`.`surname`, `lecturers`.`patronomic_name`, `lecturers`.`adress`, `lecturers`.`gender`, `lecturers`.`date_born` , `kafedra`.`name` AS 'kafedra_name' FROM `lecturers` LEFT JOIN `kafedra` ON (`kafedra`.`id`=`lecturers`.`kafedra_id`) WHERE `lecturers`.`id` = '".$_GET['id']."';");
-                              $row = mysqli_fetch_assoc($result)
+                              $result = mysqli_query($connection, "SELECT * FROM `lecturers` WHERE `id` = '".$_REQUEST['id']."'");
+                              $row = mysqli_fetch_assoc($result);
+                              $result1 = mysqli_query($connection, "SELECT * FROM `kafedra`");
                               ?>
-                              <form action="edit_table.php" method="POST">
+                              <form action="edit_table.php" method="GET">
                                 Фамилия: <input type=text name="lecturersSurname" value="<?=$row['surname'];?>"></br>
-                                Имя: <input type=text name="leturersName" value="<?=$row['name'];?>"></br>
+                                Имя: <input type=text name="leсturersName" value="<?=$row['name'];?>"></br>
                                 Отчество: <input type=text name="lecturersPatronomicName" value="<?=$row['patronomic_name'];?>"></br>
                                 Адрес: <input type=text name="lecturersAdress" value="<?=$row['adress'];?>"></br>
                                 Пол: <input type=text name="lecturersGender" value="<?=$row['gender'];?>"></br>
-                                Дата рождения: <input type=text name="lecturersDateBorn" value="<?=$row['name'];?>"></br>
-                                Кафедра: <input type=text name="leturersKafedraName" value="<?=$row['abbr'];?>"readonly></br>
+                                Дата рождения: <input type=text name="lecturersDateBorn" value="<?=$row['date_born'];?>"></br>
+                                Кафедра: 
+                                <select name='kafedraId'>
+                                  <?php while ($row1 = mysqli_fetch_assoc($result1))
+                                  {
+                                    ?><option value='<?=$row1['id'];?>'  <?=($row1['id']==$row['kafedra_id'])?"selected":"";?>><?=$row1['name'];?></option>
+                                  <?php
+                                  }
+                                  ?>
+                                </select></br>
                                 <input type=hidden name="id" value="<?=$row['id'];?>">
                                 <input type=hidden name="tableName" value="<?=$_GET['tableName'];?>">
-                                <input type=submit name="action" value="Изменить">
+                                <input type=submit name="action" value="<?=(empty($_REQUEST['id']))?"Сохранить":"Изменить";?>">
                               </form>
                   <?php
                               break;
@@ -113,18 +143,25 @@
                               break;
                       
                             case 'social_activity':
-                              $result = mysqli_query($connection,"SELECT `social_activity`.`id`, `student`.`name`, `student`.`surname`, `student`.`patronomic_name`,`social_activity`.`type`, `social_activity`.`bal` FROM `social_activity` LEFT JOIN `student` ON (`student`.`id`=`social_activity`.`student_id`) WHERE `social_activity`.`id` = '".$_GET['id']."';");
-                              $row = mysqli_fetch_assoc($result)
+                              $result = mysqli_query($connection, "SELECT * FROM `social_activity` WHERE `id` = '".$_REQUEST['id']."'");
+                              $row = mysqli_fetch_assoc($result);
+                              $result1 = mysqli_query($connection, "SELECT * FROM `student`");
                               ?>
-                              <form action="edit_table.php" method="POST">
-                                Имя: <input type=text name="socialActivityName" value="<?=$row['name'];?>"readonly></br>
-                                Фамилия: <input type=text name="socialActivitySurname" value="<?=$row['surname'];?>"readonly></br>
-                                Отчество: <input type=text name="socialActivityPatronomicName" value="<?=$row['patronomic_name'];?>"readonly></br>
+                              <form action="edit_table.php" method="GET">
+                                Студент: 
+                                <select name='studentId'>
+                                  <?php while ($row1 = mysqli_fetch_assoc($result1))
+                                  {
+                                    ?><option value='<?=$row1['id'];?>'  <?=($row1['id']==$row['student_id'])?"selected":"";?>><?=$row1['surname'].' '.$row1['name'].' '.$row1['patronomic_name'];?></option>
+                                  <?php
+                                  }
+                                  ?>
+                                </select></br>
                                 Вид: <input type=text name="socialActivityType" value="<?=$row['type'];?>"></br>
                                 Бал: <input type=text name="socialActivityBal" value="<?=$row['bal'];?>"></br>
                                 <input type=hidden name="id" value="<?=$row['id'];?>">
                                 <input type=hidden name="tableName" value="<?=$_GET['tableName'];?>">
-                                <input type=submit name="action" value="Изменить">
+                                <input type=submit name="action" value="<?=(empty($_REQUEST['id']))?"Сохранить":"Изменить";?>">
                               </form>
                   <?php
                               break;
@@ -133,15 +170,24 @@
                               break;
                       
                             case 'speciality':
-                              $result = mysqli_query($connection,"SELECT `speciality`.`id`, `speciality`.`name`, `kafedra`.`name` AS 'kafedra_name' FROM `speciality` LEFT JOIN `kafedra` ON (`kafedra`.`id`=`speciality`.`kafedra_id`) WHERE `speciality`.`id` = '".$_GET['id']."';");
-                              $row = mysqli_fetch_assoc($result)
+                              $result = mysqli_query($connection, "SELECT * FROM `speciality` WHERE `id` ='".$_REQUEST['id']."'");
+                              $row = mysqli_fetch_assoc($result);
+                              $result1 = mysqli_query($connection, "SELECT * FROM `kafedra`");
                               ?>
-                              <form action="edit_table.php" method="POST">
+                              <form action="edit_table.php" method="GET">
                                 Специальность: <input type=text name="specialityName" value="<?=$row['name'];?>"></br>
-                                Выпускающая кафедра: <input type=text name="specialityKafedraName" value="<?=$row['kafedra_name'];?>"></br>
+                                Выпускающая кафедра:
+                                <select name='kafedraId'>
+                                  <?php while ($row1 = mysqli_fetch_assoc($result1))
+                                  {
+                                    ?><option value='<?=$row1['id'];?>'  <?=($row1['id']==$row['kafedra_id'])?"selected":"";?>><?=$row1['name'];?></option>
+                                  <?php
+                                  }
+                                  ?>
+                                </select></br>
                                 <input type=hidden name="id" value="<?=$row['id'];?>">
                                 <input type=hidden name="tableName" value="<?=$_GET['tableName'];?>">
-                                <input type=submit name="action" value="Изменить">
+                                <input type=submit name="action" value="<?=(empty($_REQUEST['id']))?"Сохранить":"Изменить";?>">
                               </form>
                   <?php
                               break;
@@ -150,19 +196,35 @@
                               break;
                       
                             case 'stipendiya_naznachenie':
-                              $result = mysqli_query($connection,"SELECT `stipendiya_naznachenie`.`id`, `student`.`surname`, `student`.`name`, `student`.`patronomic_name`, `stipendiya_types`.`type`, `stipendiya_naznachenie`.`date_start`, `stipendiya_naznachenie`.`date_end` FROM `stipendiya_naznachenie` LEFT JOIN `student` ON (`student`.`id`=`stipendiya_naznachenie`.`student_id`) LEFT JOIN `stipendiya_types` ON (`stipendiya_types`.`id`=`stipendiya_naznachenie`.`stipendiya_types_id`) WHERE `stipendiya_naznachenie`.`id` = '".$_GET['id']."';");
-                              $row = mysqli_fetch_assoc($result)
+                              $result = mysqli_query($connection, "SELECT * FROM `stipendiya_naznachenie` WHERE `id` = '".$_REQUEST['id']."'");
+                              $row = mysqli_fetch_assoc($result);
+                              $result1 = mysqli_query($connection, "SELECT * FROM `student`");
+                              $result2 = mysqli_query($connection, "SELECT * FROM `stipendiya_types`");
                               ?>
-                              <form action="edit_table.php" method="POST">
-                                Фамилия: <input type=text name="stipendiyaNaznachenieSurname" value="<?=$row['surname'];?>"readonly></br>
-                                Имя: <input type=text name="stipendiyaNaznachenieName" value="<?=$row['name'];?>"readonly></br>
-                                Отчество: <input type=text name="stipendiyaNaznacheniePatronomicName" value="<?=$row['patronomic_name'];?>"readonly></br>
-                                Состоит на: <input type=text name="stipendiyaNaznachenieType" value="<?=$row['type'];?>"></br>
+                              <form action="edit_table.php" method="GET">
+                                Студент: 
+                                <select name='studentId'>
+                                  <?php while ($row1 = mysqli_fetch_assoc($result1))
+                                  {
+                                    ?><option value='<?=$row1['id'];?>'  <?=($row1['id']==$row['student_id'])?"selected":"";?>><?=$row1['surname'].' '.$row1['name'].' '.$row1['patronomic_name'];?></option>
+                                  <?php
+                                  }
+                                  ?>
+                                </select></br>
+                                Состоит на: 
+                                <select name='stipendiyaTypesId'>
+                                  <?php while ($row2 = mysqli_fetch_assoc($result2))
+                                  {
+                                    ?><option value='<?=$row2['id'];?>'  <?=($row2['id']==$row['stipendiya_types_id'])?"selected":"";?>><?=$row2['type'];?></option>
+                                  <?php
+                                  }
+                                  ?>
+                                </select></br>
                                 Начало стипендии: <input type=text name="stipendiyaNaznachenieDateStart" value="<?=$row['date_start'];?>"></br>
                                 Конец стипендии: <input type=text name="stipendiyaNaznachenieDateEnd" value="<?=$row['date_end'];?>"></br>
                                 <input type=hidden name="id" value="<?=$row['id'];?>">
                                 <input type=hidden name="tableName" value="<?=$_GET['tableName'];?>">
-                                <input type=submit name="action" value="Изменить">
+                                <input type=submit name="action" value="<?=(empty($_REQUEST['id']))?"Сохранить":"Изменить";?>">
                               </form>
                   <?php
                               break;
@@ -174,12 +236,12 @@
                               $result = mysqli_query($connection,"SELECT * FROM `stipendiya_types` WHERE `stipendiya_types`.`id` = '".$_GET['id']."';");
                               $row = mysqli_fetch_assoc($result)
                               ?>
-                              <form action="edit_table.php" method="POST">
+                              <form action="edit_table.php" method="GET">
                                 Вид: <input type=text name="stipendiyaTypesType" value="<?=$row['type'];?>"></br>
                                 Количество: <input type=text name="stipendiyaTypesAmount" value="<?=$row['amount'];?>"></br>
                                 <input type=hidden name="id" value="<?=$row['id'];?>">
                                 <input type=hidden name="tableName" value="<?=$_GET['tableName'];?>">
-                                <input type=submit name="action" value="Изменить">
+                                <input type=submit name="action" value="<?=(empty($_REQUEST['id']))?"Сохранить":"Изменить";?>">
                               </form>
                   <?php
                               break;
@@ -188,20 +250,29 @@
                               break;
                       
                             case 'student':
-                              $result = mysqli_query($connection,"SELECT `student`.`id`, `student`.`surname`, `student`.`name`, `student`.`patronomic_name`,`student`.`adress`,`student`.`gender`,`student`.`date_born`, `group`.`name` AS 'group_name' FROM `student` LEFT JOIN `group` ON (`group`.`id`=`student`.`group_id`) WHERE `student`.`id` = '".$_GET['id']."';");
-                              $row = mysqli_fetch_assoc($result)
+                              $result = mysqli_query($connection, "SELECT * FROM `student` WHERE `id` = '".$_REQUEST['id']."'");
+                              $row = mysqli_fetch_assoc($result);
+                              $result1 = mysqli_query($connection, "SELECT * FROM `group`");
                               ?>
-                              <form action="edit_table.php" method="POST">
+                              <form action="edit_table.php" method="GET">
                                 Фамилия: <input type=text name="studentSurname" value="<?=$row['surname'];?>"></br>
                                 Имя: <input type=text name="studentName" value="<?=$row['name'];?>"></br>
                                 Отчество: <input type=text name="studentPatronomicName" value="<?=$row['patronomic_name'];?>"></br>
                                 Адресс: <input type=text name="studentAdress" value="<?=$row['adress'];?>"></br>
                                 Пол: <input type=text name="studentGender" value="<?=$row['gender'];?>"></br>
                                 Дата рождения: <input type=text name="studentDateBorn" value="<?=$row['date_born'];?>"></br>
-                                Группа: <input type=text name="studentGroupName" value="<?=$row['group_name'];?>"readonly></br>
+                                Группа: 
+                                <select name='groupId'>
+                                  <?php while ($row1 = mysqli_fetch_assoc($result1))
+                                  {
+                                    ?><option value='<?=$row1['id'];?>'  <?=($row1['id']==$row['group_id'])?"selected":"";?>><?=$row1['name'];?></option>
+                                  <?php
+                                  }
+                                  ?>
+                                </select></br>
                                 <input type=hidden name="id" value="<?=$row['id'];?>">
                                 <input type=hidden name="tableName" value="<?=$_GET['tableName'];?>">
-                                <input type=submit name="action" value="Изменить">
+                                <input type=submit name="action" value="<?=(empty($_REQUEST['id']))?"Сохранить":"Изменить";?>">
                               </form>
                   <?php
                               break;
@@ -210,36 +281,61 @@
                               break;
                       
                       case 'study':
-                              $result = mysqli_query($connection,"SELECT `study`.`id`, `subject`.`name`,`group`.`name` AS 'group_name', `study`.`semesrt` FROM `study` LEFT JOIN `subject` ON (`subject`.`id` = `study`.`subject_id`) LEFT JOIN `group` ON (`group`.`id`=`study`.`group_id`) WHERE `study`.`id` = '".$_GET['id']."';");
-                              $row = mysqli_fetch_assoc($result)
+                              $result = mysqli_query($connection, "SELECT * FROM `study` WHERE `id` = '".$_REQUEST['id']."'");
+                              $row = mysqli_fetch_assoc($result);
+                              $result1 = mysqli_query($connection, "SELECT * FROM `subject`");
+                              $result2 = mysqli_query($connection, "SELECT * FROM `group`");
                               ?>
-                              <form action="edit_table.php" method="POST">
-                                Предмет: <input type=text name="studyName" value="<?=$row['name'];?>"readonly></br>
-                                Группа: <input type=text name="studyGroupName" value="<?=$row['group_name'];?>"readonly></br>
+                              <form action="edit_table.php" method="GET">
+                                Предмет:
+                                <select name='subjectId'>
+                                  <?php while ($row1 = mysqli_fetch_assoc($result1))
+                                  {
+                                    ?><option value='<?=$row1['id'];?>'  <?=($row1['id']==$row['subject_id'])?"selected":"";?>><?=$row1['name'];?></option>
+                                  <?php
+                                  }
+                                  ?>
+                                </select></br>
+                                Группа: 
+                                <select name='groupId'>
+                                  <?php while ($row2 = mysqli_fetch_assoc($result2))
+                                  {
+                                    ?><option value='<?=$row2['id'];?>'  <?=($row2['id']==$row['group_id'])?"selected":"";?>><?=$row2['name'];?></option>
+                                  <?php
+                                  }
+                                  ?>
+                                </select></br>
                                 Семестр: <input type=text name="studySemesrt" value="<?=$row['semesrt'];?>"></br>
                                 <input type=hidden name="id" value="<?=$row['id'];?>">
                                 <input type=hidden name="tableName" value="<?=$_GET['tableName'];?>">
-                                <input type=submit name="action" value="Изменить">
+                                <input type=submit name="action" value="<?=(empty($_REQUEST['id']))?"Сохранить":"Изменить";?>">
                               </form>
                   <?php
                               break;
                       
                             case 'subject':
-                              $result = mysqli_query($connection,"SELECT `subject`.`id`, `subject`.`name`, `lecturers`.`surname` AS 'lecturers_surname', `lecturers`.`name` AS 'lecturers_name', `lecturers`.`patronomic_name` AS 'lecturers_patronomic_name', `subject`.`lection_time`, `subject`.`laba_time`, `subject`.`course_work`, `subject`.`type` FROM `subject` LEFT JOIN `lecturers` ON (`lecturers`.`id`=`subject`.`lecture_id`) WHERE `subject`.`id` = '".$_GET['id']."';");
-                              $row = mysqli_fetch_assoc($result)
+                              $result = mysqli_query($connection, "SELECT * FROM `subject` WHERE `id`= '".$_REQUEST['id']."'");
+                              $row = mysqli_fetch_assoc($result);
+                              $result1 = mysqli_query($connection, "SELECT * FROM `lecturers`");
                               ?>
-                              <form action="edit_table.php" method="POST">
+                              <form action="edit_table.php" method="GET">
                                 Предмет: <input type=text name="subjectName" value="<?=$row['name'];?>"></br>
-                                Фамилия: <input type=text name="subjectLecturersSurname" value="<?=$row['lecturers_surname'];?>"readonly></br>
-                                Имя: <input type=text name="subjectLecturersName" value="<?=$row['lecturers_name'];?>"readonly></br>
-                                Отчество: <input type=text name="subjectPatronomicName" value="<?=$row['lecturers_patronomic_name'];?>"readonly></br>
+                                Преподаватель:
+                                <select name='lectureId'>
+                                  <?php while ($row1 = mysqli_fetch_assoc($result1))
+                                  {
+                                    ?><option value='<?=$row1['id'];?>'  <?=($row1['id']==$row['lecture_id'])?"selected":"";?>><?=$row1['surname']. ' '. $row1['name']. ' ' . $row1['patronomic_name'];?></option>
+                                  <?php
+                                  }
+                                  ?>
+                                </select></br>
                                 Лекционные часы: <input type=text name="subjectLectionTime" value="<?=$row['lection_time'];?>"></br>
                                 Практические часы: <input type=text name="subjectLabaTime" value="<?=$row['laba_time'];?>"></br>
                                 Курсовая работа: <input type=text name="subjectCourseWork" value="<?=$row['course_work'];?>"></br>
                                 Тип зачёта: <input type=text name="subjectType" value="<?=$row['type'];?>"></br>  
                                 <input type=hidden name="id" value="<?=$row['id'];?>">
                                 <input type=hidden name="tableName" value="<?=$_GET['tableName'];?>">
-                                <input type=submit name="action" value="Изменить">
+                                <input type=submit name="action" value="<?=(empty($_REQUEST['id']))?"Сохранить":"Изменить";?>">
                               </form>
                   <?php
                               break;
