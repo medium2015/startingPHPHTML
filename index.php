@@ -5,7 +5,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title><?php echo $config['title']; ?></title>
+  <title><?= $config['title']; ?></title>
 
   <!-- Bootstrap Grid -->
   <link rel="stylesheet" type="text/css" href="/media/assets/bootstrap-grid-only/css/grid12.css">
@@ -31,7 +31,7 @@
           <section class="content__left col-md-8">
             <div class="block">
               <h3>Вас приветствует
-              <?php echo $fac['name']; ?>
+              <?= $fac['name']; ?>
               </h3></br>
               <h5 align="center"><?php   echo $fac['name']    ?></h5>
               <h6 align="center">Телефон <?php   echo $fac['phone']    ?></h6></br>
